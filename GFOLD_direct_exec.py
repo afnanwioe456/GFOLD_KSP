@@ -1,7 +1,5 @@
-# GFOLD_static_p3p4
 import numpy as np
 from cvxpy import *
-min_ = min
 
 ''' As defined in the paper...
 
@@ -91,15 +89,11 @@ def GFOLD_direct(N, pmark, packed_data):  # PRIMARY GFOLD SOLVER
         print('-----------------------------')
         # objective=Minimize(norm(x[0:3,N-1]-rf))
         expression = 0
-        #        for i in range(N):
-        #            expression += norm(x[4:6,i])*(1) # - rf[0:3,0]
-        #        expression *= straight_fac
         for i in range(N):
             expression += norm(x[0:3, i]) * (i / N)  # - rf[0:3,0]
         objective = Minimize(expression)
         problem = Problem(objective, con)
         print('solving p3')
-        # cpg.codegen(problem, f_name)
         obj_opt = problem.solve(solver=ECOS, verbose=True, feastol=5e-20)  # solver=SCS,max_iters=5000,verbose=True,use_indirect=False)
         # print(x.value)
         print('-----------------------------')
@@ -115,7 +109,6 @@ def GFOLD_direct(N, pmark, packed_data):  # PRIMARY GFOLD SOLVER
         objective = Minimize(expression)
         problem = Problem(objective, con)
         print('solving p4')
-        # cpg.codegen(problem, f_name)
         obj_opt = problem.solve(solver=ECOS, verbose=True)  # solver=SCS,max_iters=5000,verbose=True,use_indirect=False,warm_start=True # OK to warm start b/c p1 gave us a decent answer probably
         print('-----------------------------')
 

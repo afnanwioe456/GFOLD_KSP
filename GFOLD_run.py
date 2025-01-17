@@ -1,7 +1,9 @@
 import time
 import numpy as np
+import EvilPlotting as plot
 
-import GFOLD_params as params
+N3 = 160  # p3 precision
+N4 = 80  # p4 precision
 
 
 class solver:
@@ -52,62 +54,7 @@ class solver:
         sparse_params = sparse_params.reshape(len(sparse_params), 1)
         return x0, z0_term_inv, z0_term_log, g, sparse_params
 
-    # def run_p3(self):
-    #     import gfold_solver_p3 as solver3
-    #     (x0, z0_term_inv, z0_term_log, g, sparse_params) = self.pack_data(params.N3)
-    #     res = solver3.cg_solve(x0=x0, g_vec=g, z0_term_log=z0_term_log, z0_term_inv=z0_term_inv,
-    #                            sparse_params=sparse_params)
-    #
-    #     if res[1]['status'] == 'optimal':
-    #         tf_m = self.tf_
-    #         x = res[0]['var_x']
-    #         for i in range(x.shape[1]):
-    #             if (np.linalg.norm(x[0:3, i]) + np.linalg.norm(x[3:6, i])) < 0.1:
-    #                 tf_m = i / x.shape[1] * self.tf_
-    #                 break
-    #         return tf_m
-    #     else:
-    #         print(res)
-    #         return self.tf_  # None
-    #
-    # def run_p4(self):
-    #     import gfold_solver_p4 as solver4
-    #     (x0, z0_term_inv, z0_term_log, g, sparse_params) = self.pack_data(params.N4)
-    #     res = solver4.cg_solve(x0=x0, g_vec=g, z0_term_log=z0_term_log, z0_term_inv=z0_term_inv,
-    #                            sparse_params=sparse_params)
-    #
-    #     if res[1]['status'] == 'optimal':
-    #         m = np.exp(res[0]['var_z'])
-    #         return self.tf_, res[0]['var_x'], res[0]['var_u'], m, res[0]['var_s'], res[0]['var_z']
-    #         # (tf,x,u,m,s,z)
-    #     else:
-    #         print(res)
-    #         m = np.exp(res[0]['var_z'])
-    #         return self.tf_, res[0]['var_x'], res[0]['var_u'], m, res[0]['var_s'], res[0]['var_z']  # None
-
-    # def solve(self):
-    #     print("------solve_generated-------")
-    #     start = time.time()
-    #
-    #     tf_m = self.run_p3()
-    #     if tf_m is None:
-    #         print('p3 failed')
-    #         return None
-    #     self.tf_ = tf_m + 0.1 * self.straight_fac
-    #     #        tf_m = self.run_p3()
-    #     #        if tf_m == None:
-    #     #            print('p3- failed')
-    #     #            return None
-    #     #        self.tf_ = tf_m
-    #     print('tf_m:' + str(tf_m))
-    #     res = self.run_p4()
-    #     if res is None:
-    #         print('p4 failed')
-    #         return None
-    #     print("------solved in %fs-------" % (time.time() - start))
-    #     return res
-
-    def solve_direct(self, N3=params.N3, N4=params.N4):
+    def solve_direct(self):
         print("------solve_direct-------")
         import GFOLD_direct_exec as solver_direct
         start = time.time()
@@ -133,8 +80,6 @@ class solver:
 
 
 if __name__ == '__main__':
-    from EvilPlotting import *
-
     test_vessel = {
         'Isp': 250,
         'G_max': 100,
@@ -149,13 +94,7 @@ if __name__ == '__main__':
         'tf': 40,
         'straight_fac': 5,
     }
-    # if 'direct' in sys.argv[1:]:
-    #     print('solving test vessel directly')
-    #     (tf, x, u, m, s, z) = solver(test_vessel).solve_direct()
-    # else:
-    #     print('solving test vessel using generated code')
-    #     (tf, x, u, m, s, z) = solver(test_vessel).solve()
     try:
-        plot_run3D(*solver(test_vessel).solve_direct(), test_vessel)
+        plot.plot_run3D(*solver(test_vessel).solve_direct(), test_vessel)
     except TypeError:
         print("solve failed")

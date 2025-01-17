@@ -64,7 +64,7 @@ def plot_run3D(tf, x, u, m, s, z, v_data):
     ax.legend()
 
     f = plt.figure()
-    ax = f.add_subplot(611)
+    f.add_subplot(611)
 
     plt.plot(t, vnorm)
     y = str(v_data['V_max'])
@@ -82,7 +82,7 @@ def plot_run3D(tf, x, u, m, s, z, v_data):
 
     plt.subplot(6, 1, 4)
     plt.plot(t, Th)
-    y = str(v_data['T_max'])
+    # y = str(v_data['T_max'])
     x = np.array(range(0, int(max(t))))
     # print(eval('0*x+'+y))
     # plt.plot(x,eval('0*x+'+y))
@@ -121,7 +121,7 @@ def plot_run3D(tf, x, u, m, s, z, v_data):
             lim.append(0)
             lim2.append(0)
         n += 1
-    lim = np.array(lim).flatten()
+    # lim = np.array(lim).flatten()
     plt.subplot(6, 1, 6)
     # plt.plot(t,lim)
     # plt.plot(t,lim2)
