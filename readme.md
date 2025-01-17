@@ -1,5 +1,21 @@
 # GFOLD_KSP
 
+了解原仓库的情况请移步下一小节。
+
+Mr.G进行的修改：
+
+1.代码现代化改造，python3.6 -> python3.12，代码规范更新，各种库的版本核对，确保代码可以work；
+
+2.暂时仅确保直接执行work，代码生成的部分后面再说；
+
+3.取消画图，因为Unity版本问题经常画不上，想试试看的话可以把params.txt最后的debug_lines改成True；
+
+4.如何调试/修改的介绍视频链接：https://www.bilibili.com/video/BV1gN411p7Dm ；
+
+5.
+
+# 以下内容来自原仓库的readme
+
 连接krpc并调用求解器进行计算和自动降落的主要程序是demo3_gfold.py
 
 GFOLD_codegen.py - 生成求解的c代码

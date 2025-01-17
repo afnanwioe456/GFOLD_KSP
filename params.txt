@@ -6,12 +6,12 @@ start_altitude = 1100 #开始规划的高度（海平面）；如果太小，则
 #求解条件
 tf = 20 #预估落地所需时间/秒（必须足够大否则无解，但不宜过大，否则精度较低）
 straight_fac = 5 #值越大，末段越直
-direct = False #直接求解（比较慢）
+direct = True #直接求解（比较慢）
 
 #目标参数
-target_lat = -0.0967791065 #纬度/度
-target_lon = -74.617390900 #经度/度
-target_height = 0.2 + 113.88067357 #海平面算起
+target_lat = -0.0972079680072679 #纬度/度
+target_lon = -74.5576789589345 #经度/度
+target_height = 0.2 + 78 #海平面算起
 
 #限制参数
 max_tilt = 25  #度
@@ -41,4 +41,4 @@ final_kp = 1
 
 
 #debug
-debug_lines = True
+debug_lines = False
