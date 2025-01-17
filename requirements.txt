@@ -5,3 +5,4 @@ protobuf==5.29.3
 scipy==1.15.1
 ecos==2.0.14
 matplotlib
+simple-pid
