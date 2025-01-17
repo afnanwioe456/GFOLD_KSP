@@ -2,6 +2,7 @@ import math
 import numpy as np
 import numpy.linalg as npl
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 
 def plot_run3D(tf, x, u, m, s, z, v_data):
@@ -10,10 +11,10 @@ def plot_run3D(tf, x, u, m, s, z, v_data):
 
     r = np.array(x[0:3, :])
     v = np.array(x[3:6, :])
-    z = np.array(z)[0]
-    s = np.array(s)[0]
+    z = np.array(z)
+    s = np.array(s)
     u = np.array(u)
-    m = np.array(m)[0]
+    m = np.array(m)
 
     #    print('t',t.shape)
     #    print('r',r.shape)
@@ -40,7 +41,7 @@ def plot_run3D(tf, x, u, m, s, z, v_data):
     # u_dirs_2 = [90 - np.degrees(np.atan2(u[0,n], u[2,n])) for n in range(p.N)]
 
     traj = plt.figure()
-    ax = traj.gca(projection='3d')
+    ax = traj.add_axes(Axes3D(traj))
     ax.set_aspect('equal')
 
     r_ = np.linspace(0, max(max(r[1, :]), max(r[2, :])), 7)

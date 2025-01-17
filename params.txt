@@ -9,7 +9,7 @@ straight_fac = 5 #值越大，末段越直
 direct = True #直接求解（比较慢）
 
 #目标参数
-target_lat = -0.0972079680072679 #纬度/度
+target_lat = -0.0972079680072679 #纬度/度 当前是发射台经纬度，不是VAB楼顶
 target_lon = -74.5576789589345 #经度/度
 target_height = 0.2 + 78 #海平面算起
 
@@ -38,7 +38,6 @@ final_height = 200 #触发区域高度
 final_radius = 20 #触发区域半径
 final_throttle = 0.8
 final_kp = 1
-
 
 #debug
 debug_lines = False
