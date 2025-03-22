@@ -124,6 +124,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-GFOLD_p3/
-GFOLD_p4/
-.idea
+_test*

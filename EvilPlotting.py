@@ -6,7 +6,6 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 def plot_run3D(tf, x, u, m, s, z, v_data):
-    print('tf', tf)
     t = np.linspace(0, tf, num=len(m.T))
 
     r = np.array(x[0:3, :])
@@ -16,13 +15,6 @@ def plot_run3D(tf, x, u, m, s, z, v_data):
     u = np.array(u)
     m = np.array(m)
 
-    #    print('t',t.shape)
-    #    print('r',r.shape)
-    #    print('v',v.shape)
-    #    print('u',u.shape)
-    #    print('m',m.shape)
-    #    print('s',s.shape)
-    #    print('z',z.shape)
     r1 = v_data['T_max'] * v_data['throt'][0]
     r2 = v_data['T_max'] * v_data['throt'][1]
 
@@ -37,6 +29,9 @@ def plot_run3D(tf, x, u, m, s, z, v_data):
     Th_[-1] *= 0
     vnorm = [np.linalg.norm(vel) for vel in v.T]
 
+    print(f"Th0: {Th[0]} v0: {v[0, 0]}")
+    print(f"Th1: {Th[1]} v0: {v[0, 1]}")
+    print(f"Final mass: {m[-1]}")
     # u_dirs_1 = [90 - np.degrees(np.atan2(u[0,n], u[1,n])) for n in range(p.N)]
     # u_dirs_2 = [90 - np.degrees(np.atan2(u[0,n], u[2,n])) for n in range(p.N)]
 
@@ -53,18 +48,31 @@ def plot_run3D(tf, x, u, m, s, z, v_data):
     # ax.plot(x(t),y(t),z(t),label='Flight Path')
     ax.plot(r[1, :], r[2, :], r[0, :], label='Flight Path')
     ax.plot(r[1, ::5], r[2, ::5], r[0, ::5], linestyle='None', marker='.')
-    ax.plot_surface(X, Y, Z, cmap=plt.cm.YlGnBu_r)
+    ax.plot_surface(X, Y, Z, cmap=plt.cm.YlGnBu_r, alpha=0.5)
+    
+    for n in range(0, u.shape[1]-1, 5):
+        pos_x = r[1, n]
+        pos_y = r[2, n]
+        pos_z = r[0, n]
+        
+        thrust_x = u[1, n]
+        thrust_y = u[2, n]
+        thrust_z = u[0, n]
+        
+        ax.quiver(pos_x, pos_y, pos_z, 
+                thrust_x, thrust_y, thrust_z, 
+                length=80, normalize=True, color='orange')
 
     # Tweak the limits and add latex math labels.
 
-    ax.set_xlabel(r'$x{1}$')
-    ax.set_ylabel(r'$x{2}$')
-    ax.set_zlabel(r'$x{0}$')
+    ax.set_xlabel(r'$x$')
+    ax.set_ylabel(r'$y$')
+    ax.set_zlabel(r'$z$')
 
     ax.legend()
 
     f = plt.figure()
-    f.add_subplot(611)
+    f.add_subplot(321)
 
     plt.plot(t, vnorm)
     y = str(v_data['V_max'])
@@ -72,15 +80,15 @@ def plot_run3D(tf, x, u, m, s, z, v_data):
     plt.plot(x, eval('0*x+' + y))
     plt.title('Velocity Magnitude (m/s)')
 
-    plt.subplot(6, 1, 2)
+    plt.subplot(3, 2, 2)
     plt.plot(t, r[0, :])
     plt.title('Altitude (m)')
 
-    plt.subplot(6, 1, 3)
+    plt.subplot(3, 2, 3)
     plt.plot(t, m)
     plt.title('Mass (kg)')
 
-    plt.subplot(6, 1, 4)
+    plt.subplot(3, 2, 4)
     plt.plot(t, Th)
     # y = str(v_data['T_max'])
     x = np.array(range(0, int(max(t))))
@@ -92,13 +100,13 @@ def plot_run3D(tf, x, u, m, s, z, v_data):
     plt.plot(x, )
     plt.title('Thrust (N)')
 
-    plt.subplot(6, 1, 5)
+    plt.subplot(3, 2, 5)
     u_angle = [np.degrees(math.acos(min(1, ui[0] / npl.norm(ui)))) for ui in u.T]
     plt.plot(x, 0 * x + np.degrees(v_data['p_cs']))
     plt.plot(t, u_angle)
     plt.title('Thrust angle')
 
-    alpha = 1 / 9.80665 / v_data['Isp']
+    alpha = 1 / 9.80665 / v_data['isp']
     z0_term = (v_data['m_wet'] - alpha * r2)  # see ref [2], eq 34,35,36
     z1_term = (v_data['m_wet'] - alpha * r1)
     lim = []
@@ -122,7 +130,7 @@ def plot_run3D(tf, x, u, m, s, z, v_data):
             lim2.append(0)
         n += 1
     # lim = np.array(lim).flatten()
-    plt.subplot(6, 1, 6)
+    plt.subplot(3, 2, 6)
     # plt.plot(t,lim)
     # plt.plot(t,lim2)
     s = s.flatten()
@@ -133,6 +141,4 @@ def plot_run3D(tf, x, u, m, s, z, v_data):
     plt.plot(t, s)
     plt.title('Sigma Slack')
 
-    plt.tight_layout()
-    plt.subplots_adjust(hspace=0)
     plt.show()
